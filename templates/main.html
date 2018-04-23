@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block content %}
+<style type="text/css" media="screen">
+  html,body {
+    overflow: hidden;
+    margin:0;
+    padding:0;
+  }
+  #left {
+    position: absolute;
+    top:0;
+    left:0;
+    right: 50%;
+    bottom: 0;
+  }
+  #right {
+    position: absolute;
+    top:0;
+    left:50%;
+    right: 10px;
+    bottom: 0;
+  }
+  #editor{
+    position: absolute;
+    top:20px;
+    left:0;
+    right: 0;
+    bottom: 20px;
+  }
+  #submit{
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+  }
+  #reboot{
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+  }
+  #instructions {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+  #stream {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 110px;
+    top: 55px;
+    overflow: auto;
+    padding: 0 10px;
+  }
+  h3{
+    margin: 15px 0;
+    text-align: center;
+  }
+</style>
+<div id="left" style="float:left;">
+  <pre id="editor" style="margin-top: 0;">{{ content }}</pre>
+  <button type="submit" id="submit" value="Submit" onClick="blah();" style="background: green;">Hook</button>
+  <button type="submit" id="reboot" value="" onClick="reboot();" style="background: red">Reboot</button>
+  <script src="static/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+  <script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/twilight");
+    editor.session.setMode("ace/mode/javascript");
+    var matches = /package_name=([^&#=]*)/.exec(window.location.search);
+    var param1 = matches[1];
+
+    function reboot(){
+      $.ajax({
+        type: "GET",
+        url: "reboot?package_name="+param1,
+        success: function(result) {
+          console.log(result)
+        }
+      });
+    }
+
+    var count = 0;
+    function blah(){
+      count = count + 1;
+      var editor = ace.edit("editor");
+      $.ajax({
+        type : "POST",
+        url : "lol?package_name="+param1+"&count="+count,
+        data: JSON.stringify(editor.getValue(), null, '\t'),
+        contentType: 'application/json;charset=UTF-8',
+        success: function(result) {
+          console.log(result);
+      }
+    });
+
+
+    }
+    
+    var source = new EventSource('/stream');
+    source.addEventListener('message', function(e) {
+    $('<div>').html(e.data).appendTo('#stream');
+    }, false);
+
+    source.addEventListener('open', function(e) {
+    console.log('connection was open.');
+    }, false);
+
+    source.addEventListener('error', function(e) {
+    if (e.readyState == EventSource.CLOSED) {
+    console.log('Connection was closed.');
+    }
+}, false);
+
+  </script>
+</div>
+<div id="right">
+  <h3>console log</h3><hr/>
+  <div id="stream">
+
+  </div>
+  <div id="instructions">
+    <hr>
+    <p>Doesn't Work ? : </p>
+    <ul>
+      <li> Check app Package name and its running ! </li>
+      <li> Check whether the JS script is correct ! </li>
+    </ul>
+  </div>
+</div>
+
+{% endblock %}

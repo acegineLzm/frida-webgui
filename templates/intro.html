@@ -1,0 +1,14 @@
+ {% extends "base.html" %}
+ {% block content %}
+<form method="get" action="/packages">
+  <div style="text-align:center;">
+    <p>You can enable remote frida injection by setting ip address of the remote device running frida-server</p>
+    remote frida-server address : <input type="text" name="remote"/>
+    <p>
+      <input type="submit" value="show packages">
+    </p>
+  </div>
+  
+</form>
+{% endblock %}
+

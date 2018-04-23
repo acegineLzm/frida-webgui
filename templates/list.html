@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<style type="text/css">
+#thelist {
+  width: 900px;
+  margin: 0 auto;
+  overflow: auto;
+}
+
+ul {
+  list-style-type: none;
+}
+
+li a {
+  float: left;
+  margin: 10px;
+}
+
+a {text-decoration: none; }
+
+</style>
+
+<h1 style="text-align:center;">Available Modules!</h1>
+
+
+<div id ="thelist">
+  <ul>
+      {% for post in posts %}
+            
+          <li><a href=/hack?type=attack&module={{ post }}&package_name={{package_name}}>{{ post }}</a></li>
+      {% endfor %}
+  </ul>
+</div>
+
+<div id="notes" style="float:right;">
+<hr>
+<p>Need More modules ? </p>
+<ul>
+<li> 1. Access /update API ! </li>
+</ul>
+</div>
+
+{% endblock %}
+
+
+
+    
