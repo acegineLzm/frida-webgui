@@ -7,7 +7,7 @@ setTimeout(function(){
 
             send(s.toString());
 
-            this.loadUrl.overload("java.lang.String").call(this, s);
+            this.loadUrl(s);
 
         };
 
