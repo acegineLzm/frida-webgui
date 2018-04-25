@@ -172,11 +172,6 @@ def list():
                            posts=filess,
                            package_name = bleeh)
 
-@app.route('/update')
-def update():
-    return render_template("update.html")
-
 
 if __name__ == '__main__':
-    # main(sys.argv)
     app.run(host="0.0.0.0", threaded=True)
