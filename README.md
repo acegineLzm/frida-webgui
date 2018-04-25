@@ -7,7 +7,7 @@
 * 优化了页面布局，去掉diff-droid标志（增大ace区域为了自用）
 * 从py2改为支持py3，修改部分bug
 * js模板中统一将Dalvik替换为JAVA，frida高版本已经不支持Dalvik
-* 添加重启进程功能应对程序ANR及多重hook
+* 添加重启进程功能应对程序ANR等异常
 * 修改hook按钮server端处理逻辑，修复多次hook会被首次hook功能覆盖的问题
 
 #### 启动
@@ -29,6 +29,8 @@ start adbd
 ```
 尝试使用 adb connect ip:5555 查看是否连接成功。
 
+**建议使用模拟器**
+
 运行frida-server：
 
 ```
@@ -44,3 +46,9 @@ start adbd
 3. 选择需要注入的进程
 4. 选择模板进行编辑
 5. 编写完js点击hook按钮实现frida动态hook，右边会打印hook返回结果。
+
+#### 说明
+
+* web界面不能远程连接frida，请重启docker-compose后重试
+* 点击reboot未发现app重启请手动启动一次
+* 重选模板后请先reboot再hook

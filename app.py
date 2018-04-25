@@ -16,6 +16,7 @@ import time
 modulePath=os.path.dirname(os.path.realpath(__file__))+"/modules/"
 device = None
 remote = None
+process = None
 red = redis.Redis(host='redis', port=6379)
 # red = redis.StrictRedis()
 
@@ -88,6 +89,7 @@ def get_messages_from_js(message,data):
 
 def start_frida(x,bleeh):
     global device
+    global process
     print(device)
     process = device.attach(bleeh)
     script = process.create_script(x)
@@ -142,6 +144,7 @@ def reboot():
 
 @app.route('/lol',methods=['GET', 'POST'])
 def lol():
+    global process
     try:
         blah = request.get_json()
         bleeh = request.args.get('package_name')
@@ -150,7 +153,8 @@ def lol():
             return "boo"
         else:
             if int(count) > 1:
-                rebootfun(bleeh)
+                process.detach()
+                # rebootfun(bleeh)
             x = Environment().from_string(HTML).render(title=request.get_json())
             start_frida(x,bleeh)
             response = jsonify({"message":"ok"})
