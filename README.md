@@ -4,6 +4,7 @@
 
 简单二次开发了下，升级内容：
 
+* docker-compose启动
 * 优化了页面布局，去掉diff-droid标志（增大ace区域为了自用）
 * 从py2改为支持py3，修改部分bug
 * js模板中统一将Dalvik替换为JAVA，frida高版本已经不支持Dalvik
